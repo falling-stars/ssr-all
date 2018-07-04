@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 axios.defaults.timeout = 5000
-const fetch = (url = '', data = {}, method = 'get', formData = false) => {
+export default (url = '', data = {}, method = 'get', formData = false) => {
   return new Promise((resolve, reject) => {
     axios({
       method,
@@ -23,10 +23,4 @@ const fetch = (url = '', data = {}, method = 'get', formData = false) => {
       }
     })
   })
-}
-export default {
-  install(Vue) {
-    Vue.$axios = fetch
-    Vue.prototype.$axios = fetch
-  }
 }

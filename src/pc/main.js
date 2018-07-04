@@ -3,10 +3,10 @@ import App from './App'
 import {createRouter} from './router'
 import {createStore} from './store'
 import {sync} from 'vuex-router-sync'
-import Axios from '../unitils/axios'
+import axios from '../unitils/axios'
 import {Message} from 'element-ui'
 
-Vue.use(Axios)
+Vue.prototype.$axios = axios
 Vue.prototype.$message = Message
 
 export function createApp() {

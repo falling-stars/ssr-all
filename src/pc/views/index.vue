@@ -6,9 +6,12 @@
 </template>
 
 <script>
+  import axios from '../../unitils/axios'
   export default {
     asyncData() {
-      console.log(this.$axios)
+      axios('https://m.9ji.com/web/api/area/hotArea/v1').then(data => {
+        console.log(data)
+      }).catch(err => console.log(err))
       // this.$axios('/api/web/api/area/hotArea/v1').then(data => {
       //   console.log(data)
       // }).catch(err => {

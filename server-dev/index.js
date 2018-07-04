@@ -59,6 +59,7 @@ router.get('*', async (ctx, next) => {
 })
 app.use(router.routes()).use(router.allowedMethods())
 app.use(async (ctx, next) => {
+  console.log(ctx.url)
   if (!/^\/api.+/.test(ctx.url)) {
     ctx.body = 43
   } else {
