@@ -6,6 +6,7 @@ const server = require('koa-static')
 const mount = require('koa-mount')
 const router = require('./router')
 const proxy = require('koa-better-http-proxy')
+const proxyConfig = require('../proxy-config')
 const resolvePath = require('./resolve-path')
 const SWProcess = require('./sw-process')
 const OS = /:\\/.test(__dirname) ? 'win' : 'linux'
@@ -37,16 +38,21 @@ app.use(server(resolve(__dirname, '../dist-pc'), {index: 'default', maxage: 1000
 app.use(server(resolve(__dirname, '../dist-m/pwa'), {index: 'default'}))
 app.use(server(resolve(__dirname, '../dist-m'), {index: 'default', maxage: 1000 * 60 * 60 * 24 * 30, immutable: true}))
 app.use(router.routes()).use(router.allowedMethods())
+let reg = '^('
+proxyConfig.forEach(i => reg += `${i.from}|`)
+reg = reg.replace(/\|$/, ')')
 app.use(async (ctx, next) => {
-  if (!/^\/api.+/.test(ctx.url)) {
-    ctx.body = 43
+  if (!new RegExp(reg).test(ctx.url)) {
+    ctx.body = '404页面'
   } else {
     await next()
   }
 })
-app.use(mount('/api', proxy('http://localhost:8843', {
-  preserveReqSession: true
-})))
+proxyConfig.forEach(i => {
+  app.use(mount(i.from, proxy(i.to, {
+    preserveReqSession: true
+  })))
+})
 
 // https.createServer(ssh, app.callback()).listen(443, () => console.log('Web Run In https://localhost:443'))
 app.listen(8080, () => console.log('Web Run In https://localhost:8080'))

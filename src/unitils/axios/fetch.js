@@ -1,7 +1,14 @@
 import axios from 'axios'
+import proxyConfig from '../../../proxy-config'
 
 axios.defaults.timeout = 5000
 export default (url = '', data = {}, method = 'get', formData = false) => {
+  if (typeof window === 'undefined') {
+    proxyConfig.forEach(i => {
+      const reg = new RegExp('^' + i.from)
+      reg.test(url) && (url = url.replace(reg, i.to))
+    })
+  }
   return new Promise((resolve, reject) => {
     axios({
       method,

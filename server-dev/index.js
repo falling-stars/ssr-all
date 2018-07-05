@@ -5,6 +5,7 @@ const Koa = require('koa')
 const Router = require('koa-router')
 const mount = require('koa-mount')
 const proxy = require('koa-better-http-proxy')
+const proxyConfig = require('../proxy-config')
 const router = new Router()
 const app = new Koa()
 const {createBundleRenderer} = require('vue-server-renderer')
@@ -58,16 +59,20 @@ router.get('*', async (ctx, next) => {
   }
 })
 app.use(router.routes()).use(router.allowedMethods())
+let reg = '^('
+proxyConfig.forEach(i => reg += `${i.from}|`)
+reg = reg.replace(/\|$/, ')')
 app.use(async (ctx, next) => {
-  console.log(ctx.url)
-  if (!/^\/api.+/.test(ctx.url)) {
-    ctx.body = 43
+  if (!new RegExp(reg).test(ctx.url)) {
+    ctx.body = '404页面'
   } else {
     await next()
   }
 })
-app.use(mount('/api', proxy('https://m.9ji.com', {
-  preserveReqSession: true
-})))
+proxyConfig.forEach(i => {
+  app.use(mount(i.from, proxy(i.to, {
+    preserveReqSession: true
+  })))
+})
 
 app.listen(8080, () => console.log('Web Run In https://localhost:8080'))

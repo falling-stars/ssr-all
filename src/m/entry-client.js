@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import progress from './components/progress'
 import {createApp} from './main'
+import axios from '../unitils/axios/fetch'
 import * as OfflinePluginRuntime from 'offline-plugin/runtime'
+
 OfflinePluginRuntime.install()
 
 const processBar = Vue.prototype.$progress = new Vue(progress).$mount()
@@ -25,7 +27,7 @@ router.onReady(() => {
     processBar.start()
     Promise.all(activated.map(c => {
       if (c.asyncData) {
-        return c.asyncData({store, route: to})
+        return c.asyncData({store, route: to, axios})
       }
     })).then(() => {
       processBar.end()

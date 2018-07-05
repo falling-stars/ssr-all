@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import progress from './components/progress'
 import {createApp} from './main'
+import axios from '../unitils/axios/fetch'
 
 const processBar = Vue.prototype.$progress = new Vue(progress).$mount()
 document.body.appendChild(processBar.$el)
@@ -23,7 +24,7 @@ router.onReady(() => {
     processBar.start()
     Promise.all(activated.map(c => {
       if (c.asyncData) {
-        return c.asyncData({store, route: to})
+        return c.asyncData({store, route: to, axios})
       }
     })).then(() => {
       processBar.end()

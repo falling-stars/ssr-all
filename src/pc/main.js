@@ -6,7 +6,7 @@ import {sync} from 'vuex-router-sync'
 import axios from '../unitils/axios'
 import {Message} from 'element-ui'
 
-Vue.prototype.$axios = axios
+Vue.use(axios)
 Vue.prototype.$message = Message
 
 export function createApp() {

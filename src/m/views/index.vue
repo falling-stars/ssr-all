@@ -8,13 +8,18 @@
 
 <script>
   export default {
+    asyncData({axios}) {
+      axios('/api/web/api/area/hotArea/v1').then(data => {
+        console.log(data)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     mounted() {
-      this.$axios('/api/dsad', {name: 97}, 'post', true).catch(err => {
-        this.$message({
-          message: err,
-          type: 'error',
-          center: true
-        })
+      this.$axios('/cpp/api/plugin/info?name=highlight').then(data => {
+        console.log(data)
+      }).catch(err => {
+        console.log(err)
       })
     }
   }

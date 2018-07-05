@@ -1,4 +1,5 @@
 import {createApp} from './main'
+import axios from '../unitils/axios/fetch'
 
 export default context => {
   return new Promise((resolve, reject) => {
@@ -10,7 +11,7 @@ export default context => {
       let asyncTask = []
       const searchSyncData = target => {
         if (target.asyncData) {
-          asyncTask.push(target.asyncData({store, route: router.currentRoute}))
+          asyncTask.push(target.asyncData({store, route: router.currentRoute, axios}))
         }
         if (target.components) {
           let components = target.components

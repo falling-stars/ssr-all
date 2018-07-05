@@ -1,0 +1,10 @@
+[
+  {
+    "from": "/api",
+    "to": "https://m.9ji.com"
+  },
+  {
+    "from": "/cpp",
+    "to": "https://plugins.kancloud.cn"
+  }
+]
