@@ -53,7 +53,20 @@ module.exports = {
         })
       },
       {test: /\.js$/, loader: ['babel-loader'], exclude: /node_modules/},
-      {test: /\.scss$/, loader: ['vue-style-loader', 'css-loader', 'sass-loader']},
+      {
+        test: /\.scss$/,
+        loader: [
+          'vue-style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [resolve(`../src/${device}/assets/style/common.scss`)]
+            }
+          }
+        ]
+      },
       {test: /\.less$/, loader: ['style-loader', 'css-loader', 'less-loader']},
       {
         test: /favicon\.ico$/,

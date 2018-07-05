@@ -3,6 +3,7 @@
     <img src="../assets/images/vue.png"/>
     <h1>VueSSR</h1>
     <router-link to="/demo">demo</router-link>
+    <div class="container"></div>
   </div>
 </template>
 
@@ -25,6 +26,8 @@
   }
 </script>
 
-<style>
-
+<style lang="scss">
+  .container {
+    @extend %demo;
+  }
 </style>

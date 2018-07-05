@@ -2,6 +2,7 @@
   <div>
     <h1>VueSSR</h1>
     <router-link to="/demo">SSR-DEMO</router-link>
+    <div class="container"></div>
   </div>
 </template>
 
@@ -24,6 +25,8 @@
   }
 </script>
 
-<style>
-
+<style lang="scss">
+  .container {
+    @extend %demo;
+  }
 </style>
