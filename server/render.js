@@ -1,7 +1,7 @@
 const fs = require('fs')
 const {resolve} = require('path')
 const LRU = require('lru-cache')
-const noCache = require('./no-cache')
+const cacheList = require('./cache-list')
 const {createBundleRenderer} = require('vue-server-renderer')
 const serverBundlePC = require('../dist-pc/vue-ssr-server-bundle')
 const clientManifestPC = require('../dist-pc/vue-ssr-client-manifest')
@@ -30,11 +30,7 @@ const render = ctx => new Promise((resolve, reject) => {
   const url = ctx.url
   const key = mobile ? url + '-m' : url + '-pc'
   // 缓存管理
-  if (noCache.has(key)) {
-    renderer.renderToString(ctx, (error, html) => {
-      error ? reject(error) : resolve(html)
-    })
-  } else {
+  if (cacheList.has(key)) {
     if (!webCache.has(key)) {
       renderer.renderToString(ctx, (error, html) => {
         if (error) {
@@ -47,6 +43,10 @@ const render = ctx => new Promise((resolve, reject) => {
     } else {
       resolve(webCache.get(key))
     }
+  } else {
+    renderer.renderToString(ctx, (error, html) => {
+      error ? reject(error) : resolve(html)
+    })
   }
 })
 
